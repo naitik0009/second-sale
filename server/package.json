@@ -3,15 +3,32 @@
   "version": "1.0.0",
   "description": "Backend for Second Sale",
   "main": "app.js",
+  "type": "module",
   "scripts": {
-    "test": "node app.js"
+    "start": "node server/app",
+    "server": "node app",
+    "client": "npm start --prefix ../frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"   "
   },
   "author": "Generation 7",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "color": "^4.2.3",
+    "colors": "^1.4.0",
+    "concurrently": "^7.3.0",
     "dotenv": "^16.0.2",
+    "esm": "^3.2.25",
     "express": "^4.18.1",
+    "express-async-handler": "^1.2.0",
     "mongoose": "^6.5.4",
     "nodemon": "^2.0.19"
+
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.18.10"
+
   }
 }

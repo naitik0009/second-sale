@@ -1,15 +1,25 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link,useParams} from "react-router-dom";
-import {Row, Col, Image, ListGroup, Card, Button, Container} from "react-bootstrap";
+import {Row, Col, Image, ListGroup, Button} from "react-bootstrap";
 import Rating from "../components/rating";
-import Products from "../products";
+import axios from "axios";
 
 const ProScreen = ()=>{
     const {id} = useParams();
-    const data = Products.find((dat)=>{
-        return dat._id === id;
+    console.log(id);
+    const [Data,ManipulatePro] = React.useState([]);
+    useEffect(
+        ()=>{
+            const fetchData = async()=> {
+                const prod = await axios.get(`/api/all-products/${id}`);
+                console.log(prod.data);
+                ManipulatePro(prod.data);
+            };
 
-    });
+            fetchData();
+        },[]
+    )
+
     return (
 <>
             <Link to="/" className="btn btn-light my-3">
@@ -17,20 +27,20 @@ const ProScreen = ()=>{
             </Link>
             <Row>
                 <Col md={6}>
-                    <Image src={data.image} alt={data.name} fluid/>
+                    <Image src={Data.image} alt={Data.name} fluid/>
                 </Col>
                 <Col md={4}>
 <ListGroup variant="flush">
     <ListGroup.Item>
-        <h2>{data.name}</h2>
+        <h2>{Data.name}</h2>
     </ListGroup.Item>
     <ListGroup.Item>
-        <Rating text={data.rating} value={data.numReviews}/>
+        <Rating text={Data.rating} value={Data.numReviews}/>
     </ListGroup.Item>
 
     <ListGroup.Item>
         <i>
-            {data.description}
+            {Data.description}
         </i>
     </ListGroup.Item>
 
@@ -44,16 +54,16 @@ const ProScreen = ()=>{
                                 <Col>
                                     <p>Status</p></Col>
                                 <Col>
-                                    {data.countInStock > 0 ? "In Stock" : "Out Of Stock"}
+                                    {Data.countInStock > 0 ? "In Stock" : "Out Of Stock"}
                                 </Col>
                             </Row>
                             <Row>
-                              <Col>Price : </Col>      <Col>    ${data.price}</Col>
+                              <Col>Price : </Col>      <Col>    ${Data.price}</Col>
 
 
                             </Row>
                             <Row>
-                                <Button type="button" disabled={data.countInStock === 0} className="btn-sm"><i fas fa-shopping-cart></i> Add To Cart</Button>
+                                <Button type="button" disabled={Data.countInStock === 0} className="btn-sm"><i fas fa-shopping-cart></i> Add To Cart</Button>
 
                             </Row>
                         </ListGroup.Item>

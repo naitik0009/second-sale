@@ -1,18 +1,25 @@
-const data = require("../databases/product");
+import asyncHandler from "express-async-handler";
+import productModel from "../databases/models/productModel.js";
 
-const all = (request,response)=>{
+
+const all = asyncHandler(async (request,response)=>{
+
+    const data = await productModel.find();
     return response.status(200).json(data);
-};
 
-const getPro = (request,response)=>{
+});
+
+const getPro = asyncHandler(async (request,response) =>{
+
     const id = request.params.id;
-    const prod = data.map((inf)=>{
-      return  inf._id===id?inf:"data not found";
-    })
-    return response.status(200).json({msg:"working route",data:prod});
-};
+
+    const prod= await productModel.findById(id);
+
+    console.log(prod);
+    return response.status(200).json(prod);
+});
 
 // const Patch = (request,response)=>{};
 // const Delete = (request,response)=>{};
 
-module.exports = {all,getPro};
+export  {all,getPro};
